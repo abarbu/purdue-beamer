@@ -1,0 +1,94 @@
+\documentclass[english]{beamer} %,handout
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{auto-pst-pdf}
+\usepackage{pst-pdf}
+\usepackage{pst-all}
+\usepackage{pst-func}
+
+\makeatletter
+
+\usepackage{listings}
+\usetheme{Boadilla}
+
+\setbeamercovered{transparent}
+
+\usecolortheme{purdue}
+
+\usepackage{babel}
+
+\begin{document}
+
+\title[HMMs \& CRFs]{Hidden Markov Models \&\\
+Conditional Random Fields}
+
+\author{Andrei Barbu}
+\institute[Purdue University]
+{
+  School of Electrical and Computer Engineering\\
+  Purdue University
+}
+
+\begin{frame}
+  \titlepage
+  \begin{center}
+    \includegraphics[scale=0.6]{PU_signature_eps}
+  \end{center}
+\end{frame}
+
+\newcommand{\Gaussian}{\rput(0,-0.35){\psset{yunit=0.8cm,xunit=0.3}
+     \psGauss[linecolor=red, linewidth=0.8pt, sigma=0.5]{-1.5}{1.5}}}
+\def\dedge{\ncline[linestyle=dashed]}
+\def\omitnode{\Tr*[edge=\dedge]{}}
+
+\begin{frame}[<+->]{History}
+\begin{itemize}
+\item Developed by Markov in 1906
+\item Markov was a disciple of Chebyshev  along with Lyapunov
+\item Introduced for no practical reason, except maybe to spite Nekrasov\\
+due to the dispute over the Weak Law of Large Numbers
+\item Within 1 year it was being used to clear up issues in thermodynamics
+\end{itemize}
+\psset{yunit=2cm,xunit=1.5}
+\begin{pspicture}(10,10.1)(-10.5,-13.6)
+  \psscalebox{0.6 0.6}{
+  \pstree[nodesep=3pt,radius=2pt]{\Tr{pixel}}{%
+     \pstree{\Tr[name=one]{1}}{
+       \tlput{positions}
+       \pstree{\Tr[name=pone]{1}}{\tlput{states}\omitnode}
+       \pstree{\Tr[name=pthree]{3}}{\Tr{\Gaussian\rput(-0.0,-0.48){$\mathcal{N}(\mu,\Sigma)_{position,state}$}}}
+       \ncline[linestyle=dashed]{pone}{pthree}
+     }
+     \pstree{\Tr[name=nine]{9}}{\omitnode \omitnode \omitnode}
+     \pstree{\Tr[name=background]{background}}{\Tr{\Gaussian}\rput(-0.0,-0.48){$\mathcal{N}(\mu,\Sigma)_{pixel}$}}}
+   \ncline[linestyle=dashed]{one}{nine}}
+\end{pspicture}
+% \includegraphics[scale=0.7]{model_figure}
+\end{frame}
+
+\begin{frame}[<+->]{Markov Models}
+\begin{itemize}
+\item Process with the Markov property: $P(s_{t+1}|s_{t},...,s_{0})=P(s_{t+1}|s_{t})$
+\item Process with discrete time\end{itemize}
+\begin{uncoverenv}%{}
+<3->
+\begin{exampleblock}
+{Two processes}
+\begin{itemize}
+\item $\left[\begin{array}{cc}
+p_{00} & p_{01}\\
+p_{10} & p_{11}\end{array}\right]$
+\item $\sum_{i}p_{ji}=1$
+\item  $\left[\begin{array}{cc}
+p_{00} & p_{01}\\
+p_{10} & p_{11}\end{array}\right]\left[\begin{array}{c}
+N_{0}(t)\\
+N_{1}(t)\end{array}\right]=\left[\begin{array}{c}
+N_{0}(t+1)\\
+N_{1}(t+1)\end{array}\right]$
+\end{itemize}
+\end{exampleblock}
+\end{uncoverenv}%{}
+\end{frame}
+
+\end{document}
